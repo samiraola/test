@@ -1,22 +1,37 @@
 <?php
+session_start();
 $connexion = mysqli_connect('localhost','root','','Taches');
 if(!$connexion){
     die('erreur à la connexion');
 }
-if(!empty($_POST['nom'] && !empty($_POST['caracteristique'])&& !empty($_POST['heure']))){
-    $nom = $_POST['nom'];
-    $caracteristique = $_POST['caracteristique'];
-    $heure = $_POST['heure'];
-    echo $nom;
-    echo "ok";
-    $insere = "INSERT INTO gestion(nom,caracteristique,heure)";
-    $insere .= "VALUES('$nom','$caracteristique','$heure')";
-    $result = mysqli_query($connexion, $insere);
-    if($result){
-       header('Location: tableau.php');
-    }
-}
 
+if(($_SESSION['user_id'])){
+    $sessionUserId = $_SESSION['user_id'];
+
+    $select = "SELECT * FROM users WHERE id= 'sessionUserId'";
+    $result = mysqli_query($connexion, $select);
+    $users = mysqli_fetch_assoc($result);
+    if(($users)){ 
+
+        if(!empty($_POST['nom'] && !empty($_POST['caracteristique'])&& !empty($_POST['heure']))){
+            $nom = $_POST['nom'];
+            $caracteristique = $_POST['caracteristique'];
+            $heure = $_POST['heure'];
+           
+            $insere = "INSERT INTO gestion(nom,caracteristique,heure,user_id)";
+            $insere .= "VALUES('$nom','$caracteristique','$heure','$sessionUserId')";
+            $tache = mysqli_query($connexion, $insere);
+            var_dump($tache);
+            if($tache){
+            header('Location: tableau.php');
+            }else{
+                echo "erreur";
+            }
+        }
+    }
+}else{
+    echo "utilisateur inconnue";
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">

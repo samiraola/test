@@ -1,9 +1,21 @@
 <?php
+session_start();
+$connexion = mysqli_connect('localhost','root','','Taches');
+if(!$connexion){
+    die('erreur à la connexion');
+}
+if(($_SESSION['user_id'])){
+    $sessionUserId = $_SESSION['user_id'];
 
+    $select = "SELECT * FROM users WHERE id= 'sessionUserId'";
+    $result = mysqli_query($connexion, $select);
+    $users = mysqli_fetch_assoc($result);
+    var_dump($users);
+    if(($users)){ 
+        
+    }
 
-
-
-
+}
 ?>
 
 

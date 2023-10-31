@@ -1,5 +1,9 @@
 <?php
 session_start();
+$connexion = mysqli_connect('localhost','root','','Taches');
+if(!$connexion){
+    die('erreur à la connexion');
+}
 if(!empty($_POST['email'] && !empty($_POST['motPasse']))){
     $email = $_POST['email'];
     $motPasse = $_POST['motPasse'];
@@ -16,7 +20,7 @@ if(!empty($_POST['email'] && !empty($_POST['motPasse']))){
     }
     $recuperation = mysqli_fetch_all($result);
     if($recuperation){
-        $_SESSION['id']= $recuperation['id'];
+        $_SESSION['user_id']= $recuperation['id'];
         header('Location: ./connecter/index.php');
     }
 
